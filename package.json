@@ -1,0 +1,31 @@
+{
+  "name": "myvue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --config dev.config.js --progress --display-modules --colors"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "pug": "^2.0.0-rc.2",
+    "pug-loader": "^2.3.0",
+    "autoprefixer": "^7.1.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "postcss-loader": "^2.0.6",
+    "style-loader": "^0.18.2",
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.3.0",
+    "vue-loader": "^13.0.2",
+    "vue-template-compiler": "^2.4.2"
+  },
+  "dependencies": {
+    "vue": "^2.4.2"
+  }
+}
