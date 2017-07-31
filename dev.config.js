@@ -1,8 +1,12 @@
 const webpack           = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const path              = require('path');
 const fs                = require('fs');
 const pug_files         = path.resolve(`${__dirname}/src/page`);        //pug 页面模板目录
+
+
+const extractSass       = new ExtractTextPlugin('css/[name].css');
 
 let config      = {
     context : path.resolve(__dirname)
@@ -10,18 +14,30 @@ let config      = {
 
 config.entry   = {
     app : "./src/module/feed/app.js",
-}
+};
+
 config.output = {
     path        : path.resolve(__dirname,'./dist'),
     publicPath  : './',
     filename    : "js/[name].js"
-}
+};
 
 config.module = {
     loaders : [
         {
             test: /\.vue/,
             loader: "vue-loader",
+            options: {
+                loaders: {
+                    // 这里把vue里面的scss代码捡到一个文件下面
+                    scss: extractSass.extract({
+                        use: [
+                            'css-loader' ,
+                            'sass-loader'
+                        ]
+                    })
+                }
+            }
         },
         {
             test: /\.pug$/,
@@ -40,37 +56,47 @@ config.module = {
             }
         },
         {
-            test: /\.css$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        minimize: true,
-                        mode: 'global'
+            test: /\.scss$/,
+            loader: extractSass.extract({
+                use: [
+                    'css-loader' ,
+                    {
+                        loader : 'postcss-loader',
+                        options : {
+                            plugins: (loader) => [
+                                require('postcss-import')({ root: loader.resourcePath }),
+                                require('autoprefixer')(),
+                            ]
+                        }
                     },
-                },
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins : (loader) => [
-                            require('autoprefixer')(),
-                        ]
-                    }
-                },
-            ]
-        }
+                    'sass-loader'
+                ],
+                // use style-loader in development
+                // fallback: "style-loader"
+            })
+        },
     ],
 
-}
+};
 
-config.plugins = []
+config.plugins = [
+    extractSass,
+    new webpack.LoaderOptionsPlugin({
+        vue: {
+            // use custom postcss plugins
+            postcss: [
+                require('postcss-import')(),
+                require('autoprefixer')()
+            ]
+        }
+    })
+];
 
 //html页面,如果注释htmpage数组项，则自动编译page下所有pug页面(不包含子目录文件)
 let htmlpage= [
     {filename: 'index.html', template : './src/page/index.pug', chunks : 'app' },
-    {filename: 'about.html', template : './src/page/about.pug', chunks : null }
-]
+    // {filename: 'about.html', template : './src/page/about.pug', chunks : null }
+];
 
 if(!htmlpage.length){
     const addtopage = (item)=> {
@@ -80,7 +106,7 @@ if(!htmlpage.length){
             template : `./src/page/${item}`,
             chunks : null
         })
-    }
+    };
     let pug_files_array = fs.readdirSync(pug_files);
     pug_files_array.forEach((item)=> {
         /\.pug$/.test(item) && addtopage(item)
@@ -93,8 +119,8 @@ htmlpage.forEach((item)=>{
             template : item.template,
             chunks : item.chunks,
         })
-    );
-})
+    )
+});
 
 
 

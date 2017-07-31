@@ -1,0 +1,49 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 12px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #f5f5f5;
+  word-break: break-word;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.6;
+  font-family: -apple-system-font, "Microsoft Yahei","Helvetica Neue", sans-serif;
+}
+[hidden],.hidden, .mobile{
+  display: none
+}
+a{
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  img {
+    border: 0
+  }
+}
+input {
+  outline: none;
+  border-radius: 0;
+}
+.fl {
+  float: left
+}
+.fr {
+  float: right
+}
+ul,li {
+  list-style: none
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none
+}
+input[type="button"],button,input[type="submit"] {
+  cursor: pointer
+}
