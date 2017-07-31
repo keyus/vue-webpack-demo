@@ -81,6 +81,7 @@ config.module = {
 
 config.plugins = [
     extractSass,
+    //针对vue的单页文件组件配置单独的postcss loader
     new webpack.LoaderOptionsPlugin({
         vue: {
             // use custom postcss plugins
