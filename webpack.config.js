@@ -7,6 +7,10 @@ const pug_files         = path.resolve(`${__dirname}/src/page`);        //pug �
 
 
 const extractSass       = new ExtractTextPlugin('css/[name].css');
+const vuepostcssPlugin  = new webpack.LoaderOptionsPlugin({ vue: {
+        postcss: [ require('postcss-import')(), require('autoprefixer')() ]
+    }
+});
 
 let config      = {
     context : path.resolve(__dirname)
@@ -18,7 +22,7 @@ config.entry   = {
 
 config.output = {
     path        : path.resolve(__dirname,'./dist'),
-    publicPath  : './',
+    publicPath  : '/',
     filename    : "js/[name].js"
 };
 
@@ -30,12 +34,7 @@ config.module = {
             options: {
                 loaders: {
                     // 这里把vue里面的scss代码捡到一个文件下面
-                    scss: extractSass.extract({
-                        use: [
-                            'css-loader' ,
-                            'sass-loader'
-                        ]
-                    })
+                    scss: extractSass.extract({ use: ['css-loader' , 'sass-loader'] })
                 }
             }
         },
@@ -76,21 +75,20 @@ config.module = {
             })
         },
     ],
+};
 
+config.devServer = {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 9000,
+    hot: true
 };
 
 config.plugins = [
+    new webpack.HotModuleReplacementPlugin(),    // 启用 HMR,也可以cli里面直接加上--hot参数
     extractSass,
-    //针对vue的单页文件组件配置单独的postcss loader
-    new webpack.LoaderOptionsPlugin({
-        vue: {
-            // use custom postcss plugins
-            postcss: [
-                require('postcss-import')(),
-                require('autoprefixer')()
-            ]
-        }
-    })
+    //针对vue的单页文件组件配置单独的postcss loader,而且他妈的必须得写在这个地方。写到loader里面会报错
+    vuepostcssPlugin
 ];
 
 //html页面,如果注释htmpage数组项，则自动编译page下所有pug页面(不包含子目录文件)
