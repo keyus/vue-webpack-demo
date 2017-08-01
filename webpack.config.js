@@ -5,6 +5,8 @@ const path              = require('path');
 const fs                = require('fs');
 const pug_files         = path.resolve(`${__dirname}/src/page`);        //pug 页面模板目录
 
+var env = process.env.NODE_ENV;
+
 //捡出css插件
 const extractSass       = new ExtractTextPlugin('css/[name].css');
 //vue-loader使用的子插件
@@ -12,7 +14,6 @@ const vuepostcssPlugin  = new webpack.LoaderOptionsPlugin({ vue: {
         postcss: [ require('postcss-import')(), require('autoprefixer')() ]
     }
 });
-
 
 //配置上下文
 let config      = {
@@ -63,6 +64,7 @@ config.module = {
                 presets : ["es2015"]
             }
         },
+        //scss 预处理
         {
             test: /\.scss$/,
             loader: extractSass.extract({
@@ -83,6 +85,19 @@ config.module = {
                 // fallback: "style-loader"
             })
         },
+        //图片loader
+        {
+            test: /\.(png|jpg|gif)$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        name : "images/[name].[ext]",
+                        limit: 100
+                    }
+                }
+            ]
+        },
     ],
 };
 
@@ -101,7 +116,11 @@ config.plugins = [
     new webpack.HotModuleReplacementPlugin(),    // 启用 HMR,也可以cli里面直接加上--hot参数
     extractSass,
     //针对vue的单页文件组件配置单独的postcss loader,而且他妈的必须得写在这个地方。写到loader里面会报错
-    vuepostcssPlugin
+    vuepostcssPlugin,
+    //防止webpack热加载，编译报错
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(env)
+    })
 ];
 
 

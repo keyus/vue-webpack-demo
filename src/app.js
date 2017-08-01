@@ -1,12 +1,15 @@
 import Vue from 'vue';
 import App from './app.vue';
-import axios from 'axios';
+import store from './store/index';
+import router from './router/index';
+import leftbar from './components/leftbar/index';
+import sitemenu from './components/sitemenu/index';
 
-import leftbar from './components/leftbar/index'
 import './sass/common.scss'
 
 const components = [
-    leftbar
+    leftbar,
+    sitemenu
 ];
 
 const install = function(Vue) {
@@ -17,15 +20,13 @@ const install = function(Vue) {
 install(Vue);
 
 const app = new Vue({
+    store,
+    router,
     render : (h)=> h(App),
-    mounted () {
-        axios.get('http://10.148.60.223/api/account/preferences/lang')
-            .then(function (response) {
-                console.log(response);
-            })
+    mounted() {
+        console.log(this)
     }
 });
-
 app.$mount('#app');
 
 
