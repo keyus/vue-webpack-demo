@@ -10,15 +10,27 @@ div.sitemenu
     div.sitemenu-list
         ul
             li
-                a.active
+                router-link(
+                        to="/"
+                        :class="{ active : currentMenu === 'index'}"
+                        @click.native="changeMenu('index')"
+                    )
                     span.icon-kanguo
                     span.text 概览
             li
-                a
+                router-link(
+                    to="/category"
+                    :class="{ active : currentMenu === 'category'}"
+                    @click.native="changeMenu('category')"
+                )
                     span.icon-liebiao
                     span.text 分类
             li
-                a
+                router-link(
+                    to="/article"
+                    :class="{ active : currentMenu === 'article'}"
+                    @click.native="changeMenu('article')"
+                )
                     span.icon-wenjianjia
                     span.text 文章
             li
@@ -90,6 +102,7 @@ div.sitemenu
             box-sizing: border-box;
             font-size: 1.2rem;
             cursor: pointer;
+            color: #42526e;
 
             &:hover{
                 background-color: rgba(9, 30, 66, 0.04);
@@ -114,5 +127,22 @@ div.sitemenu
 <script>
     export default {
         name: "AmSitemenu",
+        data () {
+            return {
+            }
+        },
+
+        computed : {
+            currentMenu () {
+                return this.$store.state.currentMenu
+            }
+        },
+
+        methods : {
+            changeMenu (e) {
+                this.$store.commit('currentMenu',e);
+            }
+        }
+
     }
 </script>

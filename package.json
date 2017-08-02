@@ -35,9 +35,11 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "js-cookie": "^2.1.4",
+    "element-ui":"^1.4.1",
+    "nprogress": "^0.2.0",
     "vue": "^2.4.2",
     "vuex": "^2.3.1",
-    "vue-router": "^2.7.0",
-    "element-ui":"^1.4.1"
+    "vue-router": "^2.7.0"
   }
 }

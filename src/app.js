@@ -23,8 +23,9 @@ const app = new Vue({
     store,
     router,
     render : (h)=> h(App),
+    beforeCreate () {
+    },
     mounted() {
-        console.log(this)
     }
 });
 app.$mount('#app');

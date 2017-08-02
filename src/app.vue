@@ -3,6 +3,9 @@ div.app
     am-leftbar
     am-sitemenu
     div.main
+        transition(name="slide")
+            router-view
+
 </template>
 
 <style lang="scss">
