@@ -48,11 +48,14 @@ config.module = {
                 }
             }
         },
+        //pug 模板页
         {
             test: /\.pug$/,
             loader: "pug-loader",
             options: { pretty : true }
         },
+
+        //js语法转换
         {
             test: /\.jsx?$/,
             loader: "babel-loader" ,
@@ -64,6 +67,25 @@ config.module = {
                 presets : ["es2015"]
             }
         },
+        //css 处理
+        {
+            test: /\.css$/,
+            loader: extractSass.extract({
+                use: [
+                    'css-loader' ,
+                    {
+                        loader : 'postcss-loader',
+                        options : {
+                            plugins: (loader) => [
+                                require('postcss-import')({ root: loader.resourcePath }),
+                                require('autoprefixer')(),
+                            ]
+                        }
+                    },
+                ],
+            })
+        },
+
         //scss 预处理
         {
             test: /\.scss$/,
@@ -98,6 +120,19 @@ config.module = {
                 }
             ]
         },
+        //文件字体svg
+        {
+            test: /\.(eot|woff|woff2|ttf)$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name : "css/font/[name].[ext]",
+                    }
+                }
+            ]
+        },
+
     ],
 };
 
