@@ -48,14 +48,40 @@ table.am-table tr{
   }
 }
 
-table a{
-  font-size: 12px;
-  margin-right: .5rem;
-  color: #0057cc;
-  &:hover{
-    color: #0065ff;
-    text-decoration: underline;
+table {
+  tr {
+    td {
+      &:first-child {
+        cursor: pointer;
+        .icon-sanjiao3,.icon-sanjiao1 {
+          font-size: .7rem;
+          margin-right: .4rem;
+        }
+      }
+    }
   }
+  tr.son td{
+    &:first-child {
+      padding-left: 2rem;
+    }
+  }
+
+  tr.sun td{
+    &:first-child {
+      padding-left: 5rem;
+    }
+  }
+
+  a{
+    font-size: 12px;
+    margin-right: .5rem;
+    color: #0057cc;
+    &:hover{
+      color: #0065ff;
+      text-decoration: underline;
+    }
+  }
+
 }
 
 .search{
@@ -76,3 +102,4 @@ table a{
 .w5{
   width: 440px;
 }
+

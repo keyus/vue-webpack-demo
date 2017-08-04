@@ -10,14 +10,16 @@
                 </el-form-item>
 
                 <el-form-item label="归属">
-                    <el-select v-model="form.parent_id" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="form.parent_id" placeholder="请选择分类">
+                        <el-option label="顶级分类" value="0" ></el-option>
+                        <template v-for="it in allot" >
+                            <el-option :label="it.name" :value="it.pid" ></el-option>
+                        </template>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="启用">
-                    <el-switch on-text="" off-text="" v-model="form.isuse"></el-switch>
+                    <el-switch on-text="" off-text="" v-model="isuse"></el-switch>
                 </el-form-item>
                 <el-form-item label="排序">
                     <el-input v-model="form.sort"></el-input>
@@ -49,16 +51,26 @@
         data() {
             return {
                 id : this.$route.query.id,
+                allot : "",
+                isuse : true,
                 form: {
                     name: '',
+                    pname: '',
                     delivery: false,
-                    isuse: true,
                     sort: '50'
                 }
             }
         },
+
+        computed : {
+
+        },
+
         mounted () {
             let id = this.id;
+            this.api.category().then((res)=>{
+                this.allot = res.data;
+            });
             this.api.category(id).then((res)=>{
                 this.form = res.data;
             })
